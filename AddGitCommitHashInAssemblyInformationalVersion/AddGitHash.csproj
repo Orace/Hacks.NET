@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- This target feed AssemblyInformationalVersion with AssemblyVersion and current git hash -->
+  <Target Name="WriteAssemblyInformationalVersion" BeforeTargets="CoreCompile">      
+    <!-- Get the hash -->
+    <Exec Command="git -C $(ProjectDir) describe --match= --always --dirty=&quot; (not commited)&quot;" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" ItemName="CurrentHash" />
+    </Exec>           
+
+    <!-- read assmebly version from AssemblyInfo.cs -->
+    <PropertyGroup>
+      <In>$([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)\Properties\AssemblyInfo.cs'))</In>
+      <Pattern>^\s*\[assembly: AssemblyVersion\("(?&lt;AssemblyVersion&gt;.*)\"\)\]</Pattern>
+      <AssemblyVersion>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["AssemblyVersion"].Value)</AssemblyVersion>
+    </PropertyGroup>
+
+    <!-- names the obj/.../CustomAssemblyInfo.cs file -->
+    <PropertyGroup>
+      <CustomAssemblyInfoFile>$(IntermediateOutputPath)CustomAssemblyInfo.cs</CustomAssemblyInfoFile>
+    </PropertyGroup>
+
+    <!-- defines the AssemblyMetadata attribute that will be written -->
+    <ItemGroup>
+      <AssemblyAttributes Include="AssemblyInformationalVersion">
+        <_Parameter1>$(AssemblyVersion)+@(CurrentHash)</_Parameter1>
+      </AssemblyAttributes>
+    </ItemGroup>
+
+    <!-- writes the attribute to the customAssemblyInfo file -->
+    <WriteCodeFragment Language="C#" OutputFile="$(CustomAssemblyInfoFile)" AssemblyAttributes="@(AssemblyAttributes)" />
+
+    <!-- includes the CustomAssemblyInfo for compilation into your project -->
+    <ItemGroup>
+      <Compile Include="$(CustomAssemblyInfoFile)" />
+    </ItemGroup>
+  </Target>
+</Project>
