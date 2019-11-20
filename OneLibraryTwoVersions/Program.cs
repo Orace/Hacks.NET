@@ -8,14 +8,14 @@ namespace OneLibraryTwoVersions
     {
         static void Main(string[] args)
         {
-            var date1 = new NLog3::NLog.LogFactory();
-            var date2 = new NLog4::NLog.LogFactory();
+            var factory1 = new NLog3::NLog.LogFactory();
+            var factory2 = new NLog4::NLog.LogFactory();
 
-            Console.WriteLine(date1.GetType().Assembly.FullName);
-            Console.WriteLine(date1.GetType().Assembly.CodeBase);
+            Console.WriteLine(factory1.GetType().Assembly.FullName);
+            Console.WriteLine(factory1.GetType().Assembly.CodeBase);
             Console.WriteLine();
-            Console.WriteLine(date2.GetType().Assembly.FullName);
-            Console.WriteLine(date2.GetType().Assembly.CodeBase);
+            Console.WriteLine(factory2.GetType().Assembly.FullName);
+            Console.WriteLine(factory2.GetType().Assembly.CodeBase);
 
             Console.ReadKey();
         }
