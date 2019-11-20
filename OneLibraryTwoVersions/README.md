@@ -1,5 +1,6 @@
 # OneLibraryTwoVersions
-How to compile and run a project that contains two version of the same library
+How to compile and run a project that contains two version of the same library.
+
 For a detailled description of the steps see https://stackoverflow.com/a/58951998/361177
 
 ## Steps
