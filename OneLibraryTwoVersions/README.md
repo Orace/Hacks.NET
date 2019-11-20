@@ -9,5 +9,6 @@ How to compile and run a project that contains two version of the same library
  - Disable local copy for both
  - Add differents Aliases for both references
  - Reference the library with `extern alias *referenceAlias*;`
- - Disable automatic linq redirection
+ - Disable automatic binding redirection
+   see https://docs.microsoft.com/en-us/dotnet/framework/configure-apps/how-to-enable-and-disable-automatic-binding-redirection
  - Edit app.config
